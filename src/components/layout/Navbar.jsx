@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export class Navbar extends Component {
   render() {
@@ -9,6 +10,10 @@ export class Navbar extends Component {
           <i className="fab fa-github"></i>
           {title}
         </h1>
+        <ul>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+        </ul>
       </div>
     );
   }
