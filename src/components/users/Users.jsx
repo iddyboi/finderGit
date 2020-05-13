@@ -1,41 +1,43 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import UserItem from "./UserItem";
 import Spinner from "../layout/spinner";
+import GithubContext from "../../context/github/githubContext";
 
-export class Users extends Component {
-  state = {
-    showMore: 6,
-  };
+const Users = () => {
+  const [showMore, setShowmore] = useState(6);
 
-  showMoreUsers = () => {
-    const currentstate = this.state.showMore;
+  const githubContext = useContext(GithubContext);
+
+  const { loading, users } = githubContext;
+
+  const showMoreUsers = () => {
+    const currentstate = showMore;
     const increaseState = currentstate + 6;
-    this.setState({ showMore: increaseState });
+    setShowmore(increaseState);
   };
-  render() {
-    if (this.props.loading) {
-      return <Spinner />;
-    } else {
-      return (
-        <div style={userStyle}>
-          {this.props.users
-            .filter((el, indx) => indx < this.state.showMore)
-            .map((user) => {
-              return (
-                <UserItem
-                  key={user.id}
-                  login={user.login}
-                  avatar={user.avatar_url}
-                  html={user.html_url}
-                />
-              );
-            })}
-          <button onClick={this.showMoreUsers}>More</button>
-        </div>
-      );
-    }
+
+  if (loading) {
+    return <Spinner />;
+  } else {
+    return (
+      <div style={userStyle}>
+        {users
+          .filter((el, indx) => indx < showMore)
+          .map((user) => {
+            return (
+              <UserItem
+                key={user.id}
+                login={user.login}
+                avatar={user.avatar_url}
+                html={user.html_url}
+              />
+            );
+          })}
+        <button onClick={showMoreUsers}>More</button>
+      </div>
+    );
   }
-}
+};
 
 const userStyle = {
   display: "grid",
